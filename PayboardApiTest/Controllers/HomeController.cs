@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
+using PayboardApiTest.Models;
 
 namespace PayboardApiTest.Controllers
 {
@@ -10,20 +8,25 @@ namespace PayboardApiTest.Controllers
     {
         public ActionResult Index()
         {
-            return View();
+            var model = new HomeIndexModel
+            {
+                CustomerId = Guid.NewGuid().ToString(),
+                CustomerName = Guid.NewGuid().ToString(),
+                CustomerUserEmail = Guid.NewGuid() + "@gmail.com",
+                CustomerUserName = Guid.NewGuid().ToString()
+            };
+            return View(model);
         }
 
         public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";
-
             return View();
         }
 
         public ActionResult Contact()
         {
             ViewBag.Message = "Your contact page.";
-
             return View();
         }
     }
