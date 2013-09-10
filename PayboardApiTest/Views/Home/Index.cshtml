@@ -1,6 +1,6 @@
 ﻿@model PayboardApiTest.Models.HomeIndexModel
 @{
-    ViewBag.Title = "Home Page";  
+    ViewBag.Title = "Payboard Widget Sample Page";  
 }
 
 <table class="table table-striped">
@@ -34,6 +34,14 @@
         </td>
     </tr>
 
+    <tr>
+        <td>Not enough info</td>
+        <td>Not enough info</td>
+        <td>
+            <div id="div_for_na"></div>
+        </td>
+    </tr>
+
 </table>
 
 @section Scripts
@@ -62,11 +70,19 @@
         var newConfig = {
             organizationId: 1,
             customerId: '@Model.CustomerId',
-            customerUserId: "@Model.ExternalUserId",
+            customerUserId: "@Model.CustomerUserId",
             customerUserName: '@Model.CustomerUserName',
             customerUserEmail: '@Model.CustomerUserEmail'
         };
         Payboard.widget(newConfig).show('#div_for_new');
         
+        var naConfig = {
+            organizationId: 1,
+            customerId: 'na',
+            // customerUserId: "ken",
+            customerUserName: 'NotEnough Information',
+            customerUserEmail: 'ken@payboard.com'
+        };
+        Payboard.widget(naConfig).show('#div_for_na');
     </script>
 }

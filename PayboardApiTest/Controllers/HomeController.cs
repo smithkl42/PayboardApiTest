@@ -13,6 +13,7 @@ namespace PayboardApiTest.Controllers
                 CustomerId = Guid.NewGuid().ToString(),
                 CustomerName = Guid.NewGuid().ToString(),
                 CustomerUserEmail = Guid.NewGuid() + "@gmail.com",
+                CustomerUserId = Guid.NewGuid().ToString(),
                 CustomerUserName = Guid.NewGuid().ToString()
             };
             return View(model);
