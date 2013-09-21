@@ -6,15 +6,17 @@ namespace PayboardApiTest.Controllers
 {
     public class HomeController : Controller
     {
+        private const string prefix = "_PBAPITest_";
+
         public ActionResult Index()
         {
             var model = new HomeIndexModel
             {
-                CustomerId = Guid.NewGuid().ToString(),
-                CustomerName = Guid.NewGuid().ToString(),
-                CustomerUserEmail = Guid.NewGuid() + "@gmail.com",
-                CustomerUserId = Guid.NewGuid().ToString(),
-                CustomerUserName = Guid.NewGuid().ToString()
+                CustomerId = prefix + Guid.NewGuid(),
+                CustomerName = prefix + Guid.NewGuid(),
+                CustomerUserEmail = prefix + Guid.NewGuid() + "@gmail.com",
+                CustomerUserId = prefix + Guid.NewGuid(),
+                CustomerUserName = prefix + Guid.NewGuid()
             };
             return View(model);
         }
