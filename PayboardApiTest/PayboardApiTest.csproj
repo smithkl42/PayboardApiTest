@@ -158,6 +158,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\ShortGuid.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\HomeModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />

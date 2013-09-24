@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Web.Mvc;
+using PayboardApiTest.Helpers;
 using PayboardApiTest.Models;
 
 namespace PayboardApiTest.Controllers
@@ -12,11 +13,11 @@ namespace PayboardApiTest.Controllers
         {
             var model = new HomeIndexModel
             {
-                CustomerId = prefix + Guid.NewGuid(),
-                CustomerName = prefix + Guid.NewGuid(),
-                CustomerUserEmail = prefix + Guid.NewGuid() + "@gmail.com",
-                CustomerUserId = prefix + Guid.NewGuid(),
-                CustomerUserName = prefix + Guid.NewGuid()
+                CustomerId = prefix + ShortGuid.NewGuid(),
+                CustomerName = prefix + ShortGuid.NewGuid(),
+                CustomerUserEmail = prefix + ShortGuid.NewGuid() + "@gmail.com",
+                CustomerUserId = prefix + ShortGuid.NewGuid(),
+                CustomerUserName = prefix + ShortGuid.NewGuid()
             };
             return View(model);
         }
@@ -26,11 +27,11 @@ namespace PayboardApiTest.Controllers
             ViewBag.Message = "Your application description page.";
             var model = new HomeIndexModel
             {
-                CustomerId = prefix + Guid.NewGuid(),
-                CustomerName = prefix + Guid.NewGuid(),
-                CustomerUserEmail = prefix + Guid.NewGuid() + "@gmail.com",
-                CustomerUserId = prefix + Guid.NewGuid(),
-                CustomerUserName = prefix + Guid.NewGuid()
+                CustomerId = prefix + ShortGuid.NewGuid(),
+                CustomerName = prefix + ShortGuid.NewGuid(),
+                CustomerUserEmail = prefix + ShortGuid.NewGuid() + "@gmail.com",
+                CustomerUserId = prefix + ShortGuid.NewGuid(),
+                CustomerUserName = prefix + ShortGuid.NewGuid()
             };
             return View(model);
         }
