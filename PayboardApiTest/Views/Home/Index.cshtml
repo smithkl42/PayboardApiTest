@@ -85,16 +85,5 @@
         };
         Payboard.widget(naConfig).show('#div_for_na');
 
-        Payboard.Events.setApiKey('826ae4c9-d268-4ef3-836d-4551217ea987');
-        var event = {
-            customerId: '@Model.CustomerId',
-            customerName: '@Model.CustomerName',
-            endUserId: '@Model.CustomerUserId',
-            endUserName: '@Model.CustomerUserName',
-            endUserEmail: '@Model.CustomerUserEmail',
-            eventName: 'SawWidget'
-        };
-        Payboard.Events.trackEndUserEvent(event);
-
     </script>
 }

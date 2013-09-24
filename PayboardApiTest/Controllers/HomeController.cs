@@ -24,7 +24,15 @@ namespace PayboardApiTest.Controllers
         public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";
-            return View();
+            var model = new HomeIndexModel
+            {
+                CustomerId = prefix + Guid.NewGuid(),
+                CustomerName = prefix + Guid.NewGuid(),
+                CustomerUserEmail = prefix + Guid.NewGuid() + "@gmail.com",
+                CustomerUserId = prefix + Guid.NewGuid(),
+                CustomerUserName = prefix + Guid.NewGuid()
+            };
+            return View(model);
         }
 
         public ActionResult Contact()
