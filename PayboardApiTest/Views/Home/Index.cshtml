@@ -27,7 +27,7 @@
     </tr>
 
     <tr>
-        <td>@Model.CustomerUserName</td>
+        <td>@Model.CustomerUserFirstName</td>
         <td>@Model.CustomerUserEmail</td>
         <td>
             <div id="div_for_new"></div>
@@ -53,7 +53,8 @@
             customerId: 'smithkl42',
             customerName: "Bob's Hotel and Supply",
             customerUserId: 'matt',
-            customerUserName: 'Matt Dyor',
+            customerUserFirstName: 'Matt',
+            customerUserLastName: 'Dyor',
             customerUserEmail: 'matt@Payboard.com'
         };
         Payboard.widget(mattConfig).show('#div_for_matt');
@@ -62,7 +63,8 @@
             organizationId: 1,
             customerId: 'smithkl42',
             customerUserId: "ken",
-            customerUserName: 'Ken Smith',
+            customerUserFirstName: 'Ken',
+            customerUserLastName: 'Smith',
             customerUserEmail: 'ken@payboard.com'
         };
         Payboard.widget(kenConfig).show('#div_for_ken');
@@ -71,7 +73,8 @@
             organizationId: 1,
             customerId: '@Model.CustomerId',
             customerUserId: "@Model.CustomerUserId",
-            customerUserName: '@Model.CustomerUserName',
+            customerUserFirstName: '@Model.CustomerUserFirstName',
+            customerUserLastName: '@Model.CustomerUserLastName',
             customerUserEmail: '@Model.CustomerUserEmail'
         };
         Payboard.widget(newConfig).show('#div_for_new');
@@ -80,7 +83,8 @@
             organizationId: 1,
             customerId: 'na',
             // customerUserId: "ken",
-            customerUserName: 'NotEnough Information',
+            customerUserFirstName: 'NotEnough',
+            customerUserLastName: 'Information',
             customerUserEmail: 'ken@payboard.com'
         };
         Payboard.widget(naConfig).show('#div_for_na');

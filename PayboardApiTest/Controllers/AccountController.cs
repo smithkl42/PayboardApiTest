@@ -58,10 +58,7 @@ namespace PayboardApiTest.Controllers
                 {
                     return RedirectToLocal(returnUrl);
                 }
-                else
-                {
-                    AddErrors(result);
-                }
+                AddErrors(result);
             }
 
             // If we got this far, something failed, redisplay form
@@ -152,10 +149,7 @@ namespace PayboardApiTest.Controllers
                     {
                         return RedirectToAction("Manage", new { Message = "Your password has been changed." });
                     }
-                    else
-                    {
-                        AddErrors(result);
-                    }
+                    AddErrors(result);
                 }
             }
             else
@@ -175,10 +169,7 @@ namespace PayboardApiTest.Controllers
                     {
                         return RedirectToAction("Manage", new { Message = "Your password has been set." });
                     }
-                    else
-                    {
-                        AddErrors(result);
-                    }
+                    AddErrors(result);
                 }
             }
 

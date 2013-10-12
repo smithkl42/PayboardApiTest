@@ -17,7 +17,8 @@ namespace PayboardApiTest.Controllers
                 CustomerName = prefix + ShortGuid.NewGuid(),
                 CustomerUserEmail = prefix + ShortGuid.NewGuid() + "@gmail.com",
                 CustomerUserId = prefix + ShortGuid.NewGuid(),
-                CustomerUserName = prefix + ShortGuid.NewGuid()
+                CustomerUserFirstName = prefix + ShortGuid.NewGuid(),
+                CustomerUserLastName = prefix + ShortGuid.NewGuid()
             };
             return View(model);
         }
@@ -31,7 +32,8 @@ namespace PayboardApiTest.Controllers
                 CustomerName = prefix + ShortGuid.NewGuid(),
                 CustomerUserEmail = prefix + ShortGuid.NewGuid() + "@gmail.com",
                 CustomerUserId = prefix + ShortGuid.NewGuid(),
-                CustomerUserName = prefix + ShortGuid.NewGuid()
+                CustomerUserFirstName = prefix + ShortGuid.NewGuid(),
+                CustomerUserLastName = prefix + ShortGuid.NewGuid()
             };
             return View(model);
         }
