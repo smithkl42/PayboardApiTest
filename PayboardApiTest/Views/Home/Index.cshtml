@@ -49,7 +49,7 @@
     <script type="text/javascript" src="http://dev.payboard.com/Widget/v1.0/Payboard.js"></script>
     <script type="text/javascript">
         var mattConfig = {
-            organizationId: 1,
+            organizationId: 1048,
             customerId: 'smithkl42',
             customerName: "Bob's Hotel and Supply",
             customerUserId: 'matt',
@@ -72,7 +72,9 @@
         var newConfig = {
             organizationId: 1,
             customerId: '@Model.CustomerId',
+            customerName: '@Model.CustomerName',
             customerUserId: "@Model.CustomerUserId",
+            customerUserName: '@(Model.CustomerUserFirstName + " " + Model.CustomerUserLastName)',
             customerUserFirstName: '@Model.CustomerUserFirstName',
             customerUserLastName: '@Model.CustomerUserLastName',
             customerUserEmail: '@Model.CustomerUserEmail'
