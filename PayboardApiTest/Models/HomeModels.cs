@@ -1,6 +1,6 @@
 ﻿namespace PayboardApiTest.Models
 {
-    public class HomeIndexModel
+    public class CustomerUserModel
     {
         public string CustomerId { get; set; }
         public string CustomerName { get; set; }

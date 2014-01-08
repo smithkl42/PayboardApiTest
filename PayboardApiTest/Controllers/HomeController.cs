@@ -11,7 +11,7 @@ namespace PayboardApiTest.Controllers
 
         public ActionResult Index()
         {
-            var model = new HomeIndexModel
+            var model = new CustomerUserModel
             {
                 CustomerId = prefix + ShortGuid.NewGuid(),
                 CustomerName = prefix + ShortGuid.NewGuid(),
@@ -26,7 +26,7 @@ namespace PayboardApiTest.Controllers
         public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";
-            var model = new HomeIndexModel
+            var model = new CustomerUserModel
             {
                 CustomerId = prefix + ShortGuid.NewGuid(),
                 CustomerName = prefix + ShortGuid.NewGuid(),
@@ -38,10 +38,25 @@ namespace PayboardApiTest.Controllers
             return View(model);
         }
 
-        public ActionResult Contact()
+        public ActionResult ZeroConfig()
         {
-            ViewBag.Message = "Your contact page.";
-            return View();
+            ViewBag.Message = "A page to test the ZeroConfig scripts.";
+            var model = new CustomerUserModel
+            {
+                CustomerId = prefix + ShortGuid.NewGuid(),
+                CustomerName = prefix + ShortGuid.NewGuid(),
+                CustomerUserEmail = prefix + ShortGuid.NewGuid() + "@gmail.com",
+                CustomerUserId = prefix + ShortGuid.NewGuid(),
+                CustomerUserFirstName = prefix + ShortGuid.NewGuid(),
+                CustomerUserLastName = prefix + ShortGuid.NewGuid()
+            };
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult ZeroConfig(CustomerUserModel model)
+        {
+            return View(model);
         }
     }
 }

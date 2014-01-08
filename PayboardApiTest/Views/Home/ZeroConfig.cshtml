@@ -1,0 +1,95 @@
+﻿@model PayboardApiTest.Models.CustomerUserModel
+<hgroup>
+    <h2>ZeroConfig</h2>
+    <h3>@ViewBag.Message</h3>
+</hgroup>
+
+@Html.ActionLink("Refresh", "ZeroConfig")
+
+<div class="control-group">
+    <label for="cookieId">CookieId</label>
+    <div class="controls">
+        <div id="cookieId"></div>
+    </div>
+</div>
+
+<button id="clearCookieId">Clear CookieId</button>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <fieldset class="form-horizontal">
+        <legend>Edit User</legend>
+
+        <div class="control-group">
+            @Html.LabelFor(model => model.CustomerId)
+            <div class="controls">
+                @Html.EditorFor(model => model.CustomerId)
+                @Html.ValidationMessageFor(model => model.CustomerId)
+            </div>
+        </div>
+
+        <div class="control-group">
+            @Html.LabelFor(model => model.CustomerName)
+            <div class="controls">
+                @Html.EditorFor(model => model.CustomerName)
+                @Html.ValidationMessageFor(model => model.CustomerName)
+            </div>
+        </div>
+
+        <div class="control-group">
+            @Html.LabelFor(model => model.CustomerUserFirstName)
+            <div class="controls">
+                @Html.EditorFor(model => model.CustomerUserFirstName)
+                @Html.ValidationMessageFor(model => model.CustomerUserFirstName)
+            </div>
+        </div>
+
+        <div class="control-group">
+            @Html.LabelFor(model => model.CustomerUserLastName)
+            <div class="controls">
+                @Html.EditorFor(model => model.CustomerUserLastName)
+                @Html.ValidationMessageFor(model => model.CustomerUserLastName)
+            </div>
+        </div>
+
+        <div class="control-group">
+            @Html.LabelFor(model => model.CustomerUserId)
+            <div class="controls">
+                @Html.EditorFor(model => model.CustomerUserId)
+                @Html.ValidationMessageFor(model => model.CustomerUserId)
+            </div>
+        </div>
+
+        <div class="control-group">
+            @Html.LabelFor(model => model.CustomerUserEmail)
+            <div class="controls">
+                @Html.EditorFor(model => model.CustomerUserEmail)
+                @Html.ValidationMessageFor(model => model.CustomerUserEmail)
+            </div>
+        </div>
+
+        <p>
+            <input type="submit" value="Post" />
+        </p>
+    </fieldset>
+}
+
+@section Scripts
+{
+    <script type="text/javascript" src="//dev.payboard.com/Scripts/a5078a13-2ea5-4dc9-929b-9913ca2c0741"></script>
+    <script type="text/javascript">
+        Payboard.Events.trackPage();
+
+        $(function () {
+            var cookieId = localStorage["payboardCookieId"];
+            $('#cookieId').text(cookieId);
+            $('#CookieId').val(cookieId);
+        });
+
+        $('#clearCookieId').click(function () {
+            delete localStorage["payboardCookieId"];
+            location.reload(true);
+        });
+    </script>
+}
