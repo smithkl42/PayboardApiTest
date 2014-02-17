@@ -1,4 +1,4 @@
-﻿@model PayboardApiTest.Models.HomeIndexModel
+﻿@model PayboardApiTest.Models.CustomerUserModel
 @{
     ViewBag.Title = "About";
 }
@@ -33,5 +33,17 @@
             .fail(function(err) {
                 console.error("Unable to track end user event: " + JSON.stringify(err));
             });
+
+        //$(function () {
+        //    Payboard.Events.setApiKey('b32a62ab-00e3-4874-bdc5-a41e31257d9f');
+        //    var data = {
+        //        customerUserId: 'lsnicket',
+        //        eventName: 'User-views-challenges',
+        //        customerUserFirstName: 'Lemony',
+        //        customerUserLastName: 'Snicket',
+        //        customerUserEmail: 'lsnicket@gmail.com'
+        //    };
+        //    Payboard.Events.trackCustomerUserEvent(data);
+        //});
     </script>
 }
