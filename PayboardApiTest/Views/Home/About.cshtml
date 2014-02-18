@@ -16,7 +16,7 @@
 {
     <script type="text/javascript" src="http://dev.payboard.com/Widget/v1.0/Payboard.js"></script>
     <script type="text/javascript">
-        Payboard.Events.setApiKey('838d5fa5-7e55-4a04-9789-98f49f4ce328');
+        @*Payboard.Events.setApiKey('838d5fa5-7e55-4a04-9789-98f49f4ce328');
         var customerUserEvent = {
             customerId: '@Model.CustomerId',
             customerName: '@Model.CustomerName',
@@ -32,7 +32,7 @@
             })
             .fail(function(err) {
                 console.error("Unable to track end user event: " + JSON.stringify(err));
-            });
+            });*@
 
         //$(function () {
         //    Payboard.Events.setApiKey('b32a62ab-00e3-4874-bdc5-a41e31257d9f');
@@ -45,5 +45,8 @@
         //    };
         //    Payboard.Events.trackCustomerUserEvent(data);
         //});
+
+        Payboard.Events.setApiKey('b32a62ab-00e3-4874-bdc5-a41e31257d9f');
+        Payboard.Events.trackPage();
     </script>
 }
