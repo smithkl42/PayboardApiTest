@@ -1,0 +1,17 @@
+﻿@{
+    ViewBag.Title = "Slider";
+}
+
+<hgroup>
+    <h2>Slider Test Page</h2>
+    <h3>@ViewBag.Message</h3>
+</hgroup>
+
+@section Scripts
+{
+    <script type="text/javascript">
+        $.getScript('//dev.payboard.com/Scripts/a5078a13-2ea5-4dc9-929b-9913ca2c0741', function () {
+            Payboard.Widget.showSlider();
+        });
+    </script>
+}

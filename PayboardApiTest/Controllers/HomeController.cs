@@ -53,6 +53,12 @@ namespace PayboardApiTest.Controllers
             return View(model);
         }
 
+        public ActionResult Slider()
+        {
+            ViewBag.Message = "A page to test the Slider script.";
+            return View();
+        }
+
         [HttpPost]
         public ActionResult ZeroConfig(CustomerUserModel model)
         {
