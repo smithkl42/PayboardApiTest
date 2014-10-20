@@ -6,8 +6,6 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
-using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using PayboardApiTest.Models;
 
@@ -18,15 +16,7 @@ namespace PayboardApiTest.Controllers
     {
         public AccountController() 
         {
-            IdentityManager = new AuthenticationIdentityManager(new IdentityStore());
         }
-
-        public AccountController(AuthenticationIdentityManager manager)
-        {
-            IdentityManager = manager;
-        }
-
-        public AuthenticationIdentityManager IdentityManager { get; private set; }
 
         private Microsoft.Owin.Security.IAuthenticationManager AuthenticationManager {
             get {
@@ -52,13 +42,6 @@ namespace PayboardApiTest.Controllers
         {
             if (ModelState.IsValid)
             {
-                // Validate the password
-                IdentityResult result = await IdentityManager.Authentication.CheckPasswordAndSignInAsync(AuthenticationManager, model.UserName, model.Password, model.RememberMe);
-                if (result.Success)
-                {
-                    return RedirectToLocal(returnUrl);
-                }
-                AddErrors(result);
             }
 
             // If we got this far, something failed, redisplay form
@@ -82,18 +65,6 @@ namespace PayboardApiTest.Controllers
         {
             if (ModelState.IsValid)
             {
-                // Create a local login before signing in the user
-                var user = new User(model.UserName);
-                var result = await IdentityManager.Users.CreateLocalUserAsync(user, model.Password);
-                if (result.Success)
-                {
-                    await IdentityManager.Authentication.SignInAsync(AuthenticationManager, user.Id, isPersistent: false);
-                    return RedirectToAction("Index", "Home");
-                }
-                else
-                {
-                    AddErrors(result);
-                }
             }
 
             // If we got this far, something failed, redisplay form
@@ -106,18 +77,8 @@ namespace PayboardApiTest.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Disassociate(string loginProvider, string providerKey)
         {
-            string message = null;
-            IdentityResult result = await IdentityManager.Logins.RemoveLoginAsync(User.Identity.GetUserId(), loginProvider, providerKey);
-            if (result.Success)
-            {
-                message = "The external login was removed.";
-            }
-            else
-            {
-                message = result.Errors.FirstOrDefault();
-            }
 
-            return RedirectToAction("Manage", new { Message = message });
+            return RedirectToAction("Manage", new { Message = "" });
         }
 
         //
@@ -125,7 +86,6 @@ namespace PayboardApiTest.Controllers
         public async Task<ActionResult> Manage(string message)
         {
             ViewBag.StatusMessage = message ?? "";
-            ViewBag.HasLocalPassword = await IdentityManager.Logins.HasLocalLoginAsync(User.Identity.GetUserId());
             ViewBag.ReturnUrl = Url.Action("Manage");
             return View();
         }
@@ -136,42 +96,7 @@ namespace PayboardApiTest.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Manage(ManageUserViewModel model)
         {
-            string userId = User.Identity.GetUserId();
-            bool hasLocalLogin = await IdentityManager.Logins.HasLocalLoginAsync(userId);
-            ViewBag.HasLocalPassword = hasLocalLogin;
             ViewBag.ReturnUrl = Url.Action("Manage");
-            if (hasLocalLogin)
-            {               
-                if (ModelState.IsValid)
-                {
-                    IdentityResult result = await IdentityManager.Passwords.ChangePasswordAsync(User.Identity.GetUserName(), model.OldPassword, model.NewPassword);
-                    if (result.Success)
-                    {
-                        return RedirectToAction("Manage", new { Message = "Your password has been changed." });
-                    }
-                    AddErrors(result);
-                }
-            }
-            else
-            {
-                // User does not have a local password so remove any validation errors caused by a missing OldPassword field
-                ModelState state = ModelState["OldPassword"];
-                if (state != null)
-                {
-                    state.Errors.Clear();
-                }
-
-                if (ModelState.IsValid)
-                {
-                    // Create the local login info and link it to the user
-                    IdentityResult result = await IdentityManager.Logins.AddLocalLoginAsync(userId, User.Identity.GetUserName(), model.NewPassword);
-                    if (result.Success)
-                    {
-                        return RedirectToAction("Manage", new { Message = "Your password has been set." });
-                    }
-                    AddErrors(result);
-                }
-            }
 
             // If we got this far, something failed, redisplay form
             return View(model);
@@ -193,33 +118,10 @@ namespace PayboardApiTest.Controllers
         [AllowAnonymous]
         public async Task<ActionResult> ExternalLoginCallback(string loginProvider, string returnUrl)
         {
-            ClaimsIdentity id = await IdentityManager.Authentication.GetExternalIdentityAsync(AuthenticationManager);
-            // Sign in this external identity if its already linked
-            IdentityResult result = await IdentityManager.Authentication.SignInExternalIdentityAsync(AuthenticationManager, id);
-            if (result.Success) 
-            {
-                return RedirectToLocal(returnUrl);
-            }
-            else if (User.Identity.IsAuthenticated)
-            {
-                // Try to link if the user is already signed in
-                result = await IdentityManager.Authentication.LinkExternalIdentityAsync(id, User.Identity.GetUserId());
-                if (result.Success)
-                {
-                    return RedirectToLocal(returnUrl);
-                }
-                else 
-                {
-                    return View("ExternalLoginFailure");
-                }
-            }
-            else
-            {
                 // Otherwise prompt to create a local user
                 ViewBag.ReturnUrl = returnUrl;
                 ViewBag.LoginProvider = loginProvider;
-                return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { UserName = id.Name });
-            }
+                return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { UserName = "" });
         }
 
         //
@@ -234,20 +136,6 @@ namespace PayboardApiTest.Controllers
                 return RedirectToAction("Manage");
             }
             
-            if (ModelState.IsValid)
-            {
-                // Get the information about the user from the external login provider
-                IdentityResult result = await IdentityManager.Authentication.CreateAndSignInExternalUserAsync(AuthenticationManager, new User(model.UserName));
-                if (result.Success)
-                {
-                    return RedirectToLocal(returnUrl);
-                }
-                else
-                {
-                    AddErrors(result);
-                }
-            }
-
             ViewBag.ReturnUrl = returnUrl;
             return View(model);
         }
@@ -283,18 +171,8 @@ namespace PayboardApiTest.Controllers
         {
             return Task.Run(async () =>
             {
-                var linkedAccounts = new List<IUserLogin>(await IdentityManager.Logins.GetLoginsAsync(User.Identity.GetUserId()));
-                ViewBag.ShowRemoveButton = linkedAccounts.Count > 1;
-                return (ActionResult)PartialView("_RemoveAccountPartial", linkedAccounts);
+                return (ActionResult)PartialView("_RemoveAccountPartial", null);
             }).Result;
-        }
-
-        protected override void Dispose(bool disposing) {
-            if (disposing && IdentityManager != null) {
-                IdentityManager.Dispose();
-                IdentityManager = null;
-            }
-            base.Dispose(disposing);
         }
 
         #region Helpers
@@ -329,7 +207,7 @@ namespace PayboardApiTest.Controllers
 
             public override void ExecuteResult(ControllerContext context)
             {
-                context.HttpContext.GetOwinContext().Authentication.Challenge(new AuthenticationProperties() { RedirectUrl = RedirectUrl }, LoginProvider);
+                context.HttpContext.GetOwinContext().Authentication.Challenge(new AuthenticationProperties(), LoginProvider);
             }
         }
         #endregion

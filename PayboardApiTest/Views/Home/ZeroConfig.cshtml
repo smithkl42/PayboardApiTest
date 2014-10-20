@@ -82,6 +82,8 @@
         $.getScript('//dev.payboard.com/Scripts/838D5FA5-7E55-4A04-9789-98F49F4CE328', function () {
             // Uncomment (and customize) this next line to specify emails
             // Payboard.Events.setEmail('bjones@gmail.com');
+            Payboard.Events.setCustomerId('ArbitraryCustomerId2');
+            Payboard.Events.setCustomerName('ArbitraryCustomerName2');
             Payboard.Events.trackPage();
         });
     </script>
