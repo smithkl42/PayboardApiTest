@@ -82,22 +82,21 @@
         $.getScript('//dev.payboard.com/Scripts/838D5FA5-7E55-4A04-9789-98F49F4CE328', function () {
             // Uncomment (and customize) this next line to specify emails
             // Payboard.Events.setEmail('bjones@gmail.com');
-            Payboard.Events.setCustomerId('ArbitraryCustomerId2');
-            Payboard.Events.setCustomerName('ArbitraryCustomerName2');
+            // Payboard.Events.setCustomerId('ArbitraryCustomerId2');
+            // Payboard.Events.setCustomerName('ArbitraryCustomerName2');
             Payboard.Events.trackPage();
-        });
-    </script>
-    <script type="text/javascript">
-        $(function () {
-            var cookieId = localStorage["payboardCookieId"];
-            $('#cookieId').text(cookieId);
-            $('#CookieId').val(cookieId);
-        });
 
-        $('#clearCookieId').click(function () {
-            delete localStorage["payboardCookieId"];
-            Payboard.Events.deleteCookie("payboardCookieId");
-            location.reload(true);
+            Payboard.Events.cookieIdPromise.done(function() {
+                $('#cookieId').text(Payboard.Events.cookieId);
+                $('#CookieId').val(Payboard.Events.cookieId);
+            });
+
+            $('#clearCookieId').click(function () {
+                delete localStorage["payboardCookieId"];
+                Payboard.Events.deleteValue("payboardCookieId");
+                location.reload(true);
+            });
+
         });
     </script>
 }

@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
-using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
 using PayboardApiTest.Models;
 
@@ -14,14 +10,9 @@ namespace PayboardApiTest.Controllers
     [Authorize]
     public class AccountController : Controller
     {
-        public AccountController() 
+        private IAuthenticationManager AuthenticationManager
         {
-        }
-
-        private Microsoft.Owin.Security.IAuthenticationManager AuthenticationManager {
-            get {
-                return HttpContext.GetOwinContext().Authentication;
-            }
+            get { return HttpContext.GetOwinContext().Authentication; }
         }
 
         //
@@ -77,8 +68,7 @@ namespace PayboardApiTest.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Disassociate(string loginProvider, string providerKey)
         {
-
-            return RedirectToAction("Manage", new { Message = "" });
+            return RedirectToAction("Manage", new {Message = ""});
         }
 
         //
@@ -110,7 +100,8 @@ namespace PayboardApiTest.Controllers
         public ActionResult ExternalLogin(string provider, string returnUrl)
         {
             // Request a redirect to the external login provider
-            return new ChallengeResult(provider, Url.Action("ExternalLoginCallback", "Account", new { loginProvider = provider, ReturnUrl = returnUrl }));
+            return new ChallengeResult(provider,
+                Url.Action("ExternalLoginCallback", "Account", new {loginProvider = provider, ReturnUrl = returnUrl}));
         }
 
         //
@@ -118,10 +109,10 @@ namespace PayboardApiTest.Controllers
         [AllowAnonymous]
         public async Task<ActionResult> ExternalLoginCallback(string loginProvider, string returnUrl)
         {
-                // Otherwise prompt to create a local user
-                ViewBag.ReturnUrl = returnUrl;
-                ViewBag.LoginProvider = loginProvider;
-                return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { UserName = "" });
+            // Otherwise prompt to create a local user
+            ViewBag.ReturnUrl = returnUrl;
+            ViewBag.LoginProvider = loginProvider;
+            return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel {UserName = ""});
         }
 
         //
@@ -129,13 +120,14 @@ namespace PayboardApiTest.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> ExternalLoginConfirmation(ExternalLoginConfirmationViewModel model, string returnUrl)
+        public async Task<ActionResult> ExternalLoginConfirmation(ExternalLoginConfirmationViewModel model,
+            string returnUrl)
         {
             if (User.Identity.IsAuthenticated)
             {
                 return RedirectToAction("Manage");
             }
-            
+
             ViewBag.ReturnUrl = returnUrl;
             return View(model);
         }
@@ -163,36 +155,17 @@ namespace PayboardApiTest.Controllers
         public ActionResult ExternalLoginsList(string returnUrl)
         {
             ViewBag.ReturnUrl = returnUrl;
-            return (ActionResult)PartialView("_ExternalLoginsListPartial", new List<AuthenticationDescription>(AuthenticationManager.GetExternalAuthenticationTypes()));
+            return PartialView("_ExternalLoginsListPartial",
+                new List<AuthenticationDescription>(AuthenticationManager.GetExternalAuthenticationTypes()));
         }
 
         [ChildActionOnly]
         public ActionResult RemoveAccountList()
         {
-            return Task.Run(async () =>
-            {
-                return (ActionResult)PartialView("_RemoveAccountPartial", null);
-            }).Result;
+            return Task.Run(async () => (ActionResult) PartialView("_RemoveAccountPartial", null)).Result;
         }
 
         #region Helpers
-        private void AddErrors(IdentityResult result) {
-            foreach (var error in result.Errors) {
-                ModelState.AddModelError("", error);
-            }
-        }
-
-        private ActionResult RedirectToLocal(string returnUrl)
-        {
-            if (Url.IsLocalUrl(returnUrl))
-            {
-                return Redirect(returnUrl);
-            }
-            else
-            {
-                return RedirectToAction("Index", "Home");
-            }
-        }
 
         private class ChallengeResult : HttpUnauthorizedResult
         {
@@ -202,14 +175,16 @@ namespace PayboardApiTest.Controllers
                 RedirectUrl = redirectUrl;
             }
 
-            public string LoginProvider { get; set; }
-            public string RedirectUrl { get; set; }
+            private string LoginProvider { get; set; }
+            private string RedirectUrl { get; set; }
 
             public override void ExecuteResult(ControllerContext context)
             {
-                context.HttpContext.GetOwinContext().Authentication.Challenge(new AuthenticationProperties(), LoginProvider);
+                context.HttpContext.GetOwinContext()
+                    .Authentication.Challenge(new AuthenticationProperties(), LoginProvider);
             }
         }
+
         #endregion
     }
 }
